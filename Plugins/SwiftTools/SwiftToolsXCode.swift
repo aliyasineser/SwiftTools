@@ -105,7 +105,6 @@ extension SwiftTools {
     private func swiftGen(context: XcodePluginContext, target: XcodeTarget) throws -> Command {
         let inputFilesPath = context.xcodeProject.directory
         let outputFilesPath = context.pluginWorkDirectory.appending("Generated")
-        let configPath = inputFilesPath.appending("swiftgen.yml")
         let environment = [
             "INPUT_DIR": inputFilesPath,
             "OUTPUT_DIR": outputFilesPath
