@@ -5,24 +5,44 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftTools",
+    platforms: [
+        .iOS(.v15),
+        .watchOS(.v6),
+        .macOS(.v10_15),
+        .tvOS(.v13),
+    ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
+        .plugin(
             name: "SwiftTools",
-            targets: ["SwiftTools"]),
+            targets: ["SwiftTools"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
+        .binaryTarget(
+            name: "SwiftLintBinary",
+            url: "https://github.com/realm/SwiftLint/releases/download/0.50.3/SwiftLintBinary-macos.artifactbundle.zip",
+            checksum: "abe7c0bb505d26c232b565c3b1b4a01a8d1a38d86846e788c4d02f0b1042a904"
+        ),
+        .binaryTarget(
+            name: "swiftformat",
+            url: "https://github.com/nicklockwood/SwiftFormat/releases/download/0.51.2/swiftformat.artifactbundle.zip",
+            checksum: "d8954ff40cf39d8e343eabd83e730bd8c85a27463e356e66cd51808ca3badcc7"
+        ),
+        .binaryTarget(
+            name: "swiftgen",
+            url: "https://github.com/nicorichard/SwiftGen/releases/download/6.5.1/swiftgen.artifactbundle.zip",
+            checksum: "a8e445b41ac0fd81459e07657ee19445ff6cbeef64eb0b3df51637b85f925da8"
+        ),
+        .plugin(
             name: "SwiftTools",
-            dependencies: []),
-        .testTarget(
-            name: "SwiftToolsTests",
-            dependencies: ["SwiftTools"]),
+            capability: .buildTool(),
+            dependencies: [
+                "SwiftLintBinary",
+                "swiftformat",
+                "swiftgen"
+            ]
+        )
     ]
 )
