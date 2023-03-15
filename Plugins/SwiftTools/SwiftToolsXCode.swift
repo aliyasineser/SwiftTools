@@ -46,7 +46,7 @@ extension SwiftTools {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = packageDirectory.appending("config").appending("swiftlint.yml")
+            let configFile = "swiftlint.yml"
             var arguments = [
                 "lint",
                 "--quiet",
@@ -86,7 +86,7 @@ extension SwiftTools {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = packageDirectory.appending("config").appending(".swiftformat")
+            let configFile = ".swiftformat"
             var arguments = [
                 "--verbose",
                 "--config",
