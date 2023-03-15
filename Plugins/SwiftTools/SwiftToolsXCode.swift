@@ -120,7 +120,7 @@ extension SwiftTools {
     private func prepareArgumentsForSwiftGen(
         projectDirectory: Path
     ) -> [CustomStringConvertible] {
-        let configPath = projectDirectory.appending("config").appending("swiftgen.yml")
+        let configPath = projectDirectory.appending("swiftgen.yml")
         return  [
             "config",
             "run",
