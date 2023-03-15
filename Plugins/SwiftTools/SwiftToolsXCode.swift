@@ -90,7 +90,7 @@ extension SwiftTools {
             var arguments = [
                 "--verbose",
                 "--config",
-                "\(packageDirectory)/\(configFile)",
+                "\(packageDirectory)/config/\(configFile)",
             ]
 
             arguments += inputFiles.map(\.string)
