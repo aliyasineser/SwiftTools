@@ -17,9 +17,8 @@ extension SwiftTools: XcodeBuildToolPlugin {
             try swiftLint(context: context, target: target),
             try swiftFormat(context: context, target: target),
             try swiftGen(context: context, target: target)
-        ]
+        ].compactMap{$0}
     }
-
 }
 
 #endif

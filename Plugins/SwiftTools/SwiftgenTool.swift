@@ -13,7 +13,9 @@ import XcodeProjectPlugin
 
 // MARK: - XCodeProjectPlugin Swiftgen
 extension SwiftTools {
-    func swiftGen(context: XcodePluginContext, target: XcodeTarget) throws -> Command {
+    func swiftGen(context: XcodePluginContext, target: XcodeTarget) throws -> Command? {
+        guard let configPath = context.xcodeProject.filePaths.first(where: { pathItem in pathItem.lastComponent == "swiftgen.yml" }) else { return nil }
+
         let inputFilesPath = context.xcodeProject.directory
         let outputFilesPath = context.pluginWorkDirectory.appending("Generated")
         let environment = [
@@ -23,16 +25,16 @@ extension SwiftTools {
         return .prebuildCommand(
             displayName: "Running SwiftGen for \(target.displayName)",
             executable: try context.tool(named: "swiftgen").path,
-            arguments: prepareArgumentsForSwiftGen(context: context, projectDirectory: context.xcodeProject.directory),
+            arguments: prepareArgumentsForSwiftGen(configPath: configPath, projectDirectory: context.xcodeProject.directory),
             environment: environment,
-            outputFilesDirectory: outputFilesPath)
+            outputFilesDirectory: outputFilesPath
+        )
     }
 
     private func prepareArgumentsForSwiftGen(
-        context: XcodePluginContext,
+        configPath: Path,
         projectDirectory: Path
     ) -> [CustomStringConvertible] {
-        let configPath = context.xcodeProject.filePaths.first { $0.lastComponent == "swiftgen.yml"} ?? projectDirectory.appending("swiftgen.yml")
         return  [
             "config",
             "run",

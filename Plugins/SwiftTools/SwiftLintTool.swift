@@ -14,13 +14,13 @@ import XcodeProjectPlugin
 // MARK: - XCodeProjectPlugin SwiftLint
 extension SwiftTools {
 
-    func swiftLint(context: XcodePluginContext, target: XcodeTarget) throws -> Command {
-
+    func swiftLint(context: XcodePluginContext, target: XcodeTarget) throws -> Command? {
+        guard let configPath = context.xcodeProject.filePaths.first(where: { pathItem in pathItem.lastComponent == "swiftlint.yml" }) else { return nil }
         return .buildCommand(
             displayName: "Running SwiftLint for \(target.displayName)",
             executable: try context.tool(named: "swiftlint").path,
             arguments: prepareArgumentsForSwiftLint(
-                context: context,
+                configPath: configPath,
                 target: target,
                 packageDirectory: context.xcodeProject.directory,
                 workingDirectory: context.pluginWorkDirectory
@@ -31,7 +31,7 @@ extension SwiftTools {
     }
 
     private func prepareArgumentsForSwiftLint(
-        context: XcodePluginContext,
+        configPath: Path,
         target: XcodeTarget,
         packageDirectory: Path,
         workingDirectory: Path
@@ -39,7 +39,6 @@ extension SwiftTools {
         let inputFiles = target.inputFiles
             .filter { $0.type == .source && $0.path.extension == "swift" }
             .map(\.path)
-        let configPath = context.xcodeProject.filePaths.first { $0.lastComponent == "swiftlint.yml"} ?? packageDirectory.appending("swiftlint.yml")
         var arguments: [CustomStringConvertible] = [
             "lint",
             "--quiet",

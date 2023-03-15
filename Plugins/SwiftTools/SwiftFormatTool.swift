@@ -13,12 +13,14 @@ import XcodeProjectPlugin
 
 // MARK: - XCodeProjectPlugin SwiftFormat
 extension SwiftTools {
-    func swiftFormat(context: XcodePluginContext, target: XcodeTarget) throws -> Command {
+    func swiftFormat(context: XcodePluginContext, target: XcodeTarget) throws -> Command? {
+        guard let configPath = context.xcodeProject.filePaths.first(where: { pathItem in pathItem.lastComponent == ".swiftformat" }) else { return nil }
+
         return .prebuildCommand(
             displayName: "Running SwiftFormat for \(target.displayName)",
             executable: try context.tool(named: "swiftformat").path,
             arguments: prepareArgumentsForSwiftFormat(
-                context: context,
+                configPath: configPath,
                 target: target,
                 packageDirectory: context.xcodeProject.directory,
                 workingDirectory: context.pluginWorkDirectory
@@ -29,7 +31,7 @@ extension SwiftTools {
     }
 
     private func prepareArgumentsForSwiftFormat(
-        context: XcodePluginContext,
+        configPath: Path,
         target: XcodeTarget,
         packageDirectory: Path,
         workingDirectory: Path
@@ -37,7 +39,7 @@ extension SwiftTools {
         let inputFiles = target.inputFiles
             .filter { $0.type == .source && $0.path.extension == "swift" }
             .map(\.path)
-        let configPath = context.xcodeProject.filePaths.first { $0.lastComponent == ".swiftformat"} ?? packageDirectory.appending(".swiftformat")
+
         var arguments: [CustomStringConvertible] = [
             "--verbose",
             "--config",
