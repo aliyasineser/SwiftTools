@@ -8,8 +8,8 @@ For big project it becomes hard to manage dependencies in time. This plugin cons
 
 Please provide following config files in given path(will be configurable in future):
 
-- swiftgen.yml -> <Project_Directory>/config/swiftgen.yml
-- swiftlint.yml -> <Project_Directory>/config/swiftlint.yml
-- swiftlint-tests.yml -> <Project_Directory>/config/swiftlint-tests.yml
-- .swiftformat -> <Project_Directory>/config/.swiftformat
-- .swift-version -> <Project_Directory>/config/.swift-version
+- swiftgen.yml -> <Project_Directory>/swiftgen.yml
+- swiftlint.yml -> <Project_Directory>/swiftlint.yml
+- swiftlint-tests.yml -> <Project_Directory>/swiftlint-tests.yml
+- .swiftformat -> <Project_Directory>/.swiftformat
+- .swift-version -> <Project_Directory>/.swift-version
