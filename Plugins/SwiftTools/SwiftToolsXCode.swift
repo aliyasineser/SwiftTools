@@ -42,19 +42,19 @@ extension SwiftTools {
     private func prepareArgumentsForSwiftLint(
         target: XcodeTarget,
         packageDirectory: Path,
-        workingDirectory: Path) -> [String] {
+        workingDirectory: Path) -> [CustomStringConvertible] {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = "swiftlint.yml"
-            var arguments = [
+            let configPath = packageDirectory.appending("swiftlint.yml")
+            var arguments: [CustomStringConvertible] = [
                 "lint",
                 "--quiet",
                 "--force-exclude",
                 "--cache-path",
                 "\(workingDirectory)",
                 "--config",
-                "\(packageDirectory)/config/\(configFile)",
+                configPath,
             ]
 
             arguments += inputFiles.map(\.string)
@@ -82,15 +82,15 @@ extension SwiftTools {
     private func prepareArgumentsForSwiftFormat(
         target: XcodeTarget,
         packageDirectory: Path,
-        workingDirectory: Path) -> [String] {
+        workingDirectory: Path) -> [CustomStringConvertible] {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = ".swiftformat"
-            var arguments = [
+            let configPath = packageDirectory.appending(".swiftformat")
+            var arguments: [CustomStringConvertible] = [
                 "--verbose",
                 "--config",
-                "\(packageDirectory)/config/\(configFile)",
+                configPath,
             ]
 
             arguments += inputFiles.map(\.string)
