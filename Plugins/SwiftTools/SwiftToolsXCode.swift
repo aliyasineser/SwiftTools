@@ -46,7 +46,7 @@ extension SwiftTools {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = target.displayName.hasSuffix("Tests") ? "swiftlint-tests.yml" : "swiftlint.yml"
+            let configFile = workingDirectory.appending("config").appending("swiftlint.yml")
             var arguments = [
                 "lint",
                 "--quiet",
@@ -86,7 +86,7 @@ extension SwiftTools {
             let inputFiles = target.inputFiles
                 .filter { $0.type == .source && $0.path.extension == "swift" }
                 .map(\.path)
-            let configFile = ".swiftformat"
+            let configFile = workingDirectory.appending("config").appending(".swiftformat")
             var arguments = [
                 "--verbose",
                 "--config",
@@ -120,7 +120,7 @@ extension SwiftTools {
     private func prepareArgumentsForSwiftGen(
         projectDirectory: Path
     ) -> [CustomStringConvertible] {
-        let configPath = projectDirectory.appending("swiftgen.yml")
+        let configPath = projectDirectory.appending("config").appending("swiftgen.yml")
         return  [
             "config",
             "run",
